@@ -1,27 +1,37 @@
 import AppLayout from "@/layouts/app-layout"
-import { Head } from "@inertiajs/react"
-import { useEffect } from "react"
+import { SharedData } from "@/types"
+import { Head, usePage } from "@inertiajs/react"
 
+type User = {
+    id: number
+    name: string
+    email: string
+    image: string
+}
 
-export default function Technical({ users }: { users?: { id: number, name: string } }) {
+export default function Technical({ users }: { users?: User[] }) {
 
-    useEffect(() => {
-        console.log(users)
-    }, [])
+    const { auth } = usePage<SharedData>().props
 
     return (
         <AppLayout>
-            <Head title="Panel" />
+            <Head title="Tecnicos" />
 
-            {users ? (
-                users.map((user) => (
-                    <p key={user.id}>{user.name}</p>
-                ))
-            ) : (
-                <p>No hay usuarios</p>
-            )
+            <main className="p-4">
 
-            }
+                {users ?
+                    users.map(user => (
+                        <div key={user.id} className="flex flex-col gap-2 w-48 h-max">
+                            <img className="w-full" src={user.image} alt={user.name} />
+                            <p>{user.name}</p>
+                            <p>{user.email}</p>
+                        </div>
+                    )
+                    ) : (
+                        <p>No hay usuarios</p>
+                    )
+                }
+            </main>
 
         </AppLayout>
     )

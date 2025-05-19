@@ -18,8 +18,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 
     Route::get('/technical', function () {
-        return Inertia::render('technical');
-    },['users' => User::all()])->name('technical');
+        return Inertia::render('technical',['users' => User::all()]);
+    })->name('technical');
 
     Route::get('/users', function () {
         return response()->json(User::all());
