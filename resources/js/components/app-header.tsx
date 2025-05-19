@@ -17,7 +17,7 @@ import AppLogoIcon from './app-logo-icon';
 const mainNavItems: NavItem[] = [
     {
         title: 'Home',
-        href: '/',
+        href: '/dashboard',
         icon: Home,
     },
 ];
