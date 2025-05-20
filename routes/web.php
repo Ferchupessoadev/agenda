@@ -1,11 +1,12 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    if (auth()->check()) {
+    if (Auth::check()) {
         return Inertia::render('home');
     }
 
@@ -20,10 +21,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/technical', function () {
         return Inertia::render('technical',['users' => User::all()]);
     })->name('technical');
-
-    Route::get('/users', function () {
-        return response()->json(User::all());
-    });
 });
 
 require __DIR__.'/settings.php';
