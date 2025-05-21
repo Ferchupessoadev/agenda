@@ -19,13 +19,16 @@ export default function Technical({ users }: { users?: User[] }) {
 
             <main className="p-4">
 
-                <div className="flex flex-wrap gap-4 w-full">
+                <div className="flex flex-col flex-wrap gap-4 w-full">
                     {users ?
                         users.map(user => (
                             <div key={user.id} className="flex gap-2 w-40 h-max border border-gray-400">
                                 <img className="w-full" src={user.image} alt={user.name} />
-                                <p>{user.name}</p>
-                                <p className="">{user.email}</p>
+                                <div className="flex flex-col gap-2">
+
+                                    <p>{user.name}</p>
+                                    <p className="">{user.email}</p>
+                                </div>
                             </div>
                         )
                         ) : (

@@ -9,7 +9,7 @@ interface Props {
     children: React.ReactNode
 }
 
-export default function Modal({ className, modal, setModal, classNameBox, children, ...props }: Props) {
+export default function Modal({ modal, setModal, classNameBox, children, className, ...props }: Props) {
 
     return (
         <div {...props} className={`${modal ? "flex" : "hidden"} fixed z-50 w-full h-full flex items-center justify-center overflow-y-auto overflow-x-hidden ${className}`}>

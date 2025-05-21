@@ -41,3 +41,26 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+
+export type equipmentType = {
+    id: number,
+    computer_type: string
+    date_time_finish: Date,
+    date_time_arrival: Date,
+    description: string,
+    posible_failure: string,
+    image: string,
+    person_in_charge: string
+}
+
+export type computerForm = {
+    computerType: string,
+    dateTimeFinish: Date,
+    dateTimeArrival: Date,
+    description: string,
+    posibleFailure: string,
+    image: File | null,
+    personInCharge: string
+}
+

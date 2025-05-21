@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('computers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('computer_type');
             $table->string('description')->nullable();
             $table->string('possible_failures')->nullable();
             $table->string('image')->default('default-computer.jpg');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->dateTime('date_time_arrival');
+            $table->dateTime('date_time_finish');
+            $table->string('person_in_charge');
             $table->timestamps();
         });
     }
