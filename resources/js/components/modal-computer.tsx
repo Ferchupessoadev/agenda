@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react"
 import Modal from "./modal"
-import { router, useForm } from "@inertiajs/react"
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
 import { DatePickerDemo } from "./ui/data-picker"
 import { Textarea } from "./ui/textarea"
-import { ArrowDown, ImagePlus, LoaderCircle } from "lucide-react"
+import { ArrowDown, LoaderCircle } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { Button } from "./ui/button"
-import { computerForm, equipmentType, User } from "@/types"
+import { equipmentType, User } from "@/types"
+import ImageProfile from "./image-profile"
+import ImagePreview from "./modal/image-preview"
+import { useComputerForm } from "@/hooks/useComputerForm"
 
 type Props = {
     equipments: string[],
@@ -18,62 +19,19 @@ type Props = {
     users: User[]
 }
 
-const ModalComputer = ({ equipments, setEquipments, modal, setModal, toggleModal, users }: Props) => {
+const ModalComputer = ({ modal, setModal, users }: Props) => {
 
-    const { data, setData, reset, post, processing, errors } = useForm<Required<computerForm>>({
-        computerType: 'laptop',
-        dateTimeFinish: new Date(),
-        dateTimeArrival: new Date(),
-        description: '',
-        posibleFailure: '',
-        image: null,
-        personInCharge: ''
-    })
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        post(route('computers.store'), {
-            forceFormData: true,
-            onSuccess: () => {
-                reset('image')
-                reset('description')
-                reset('posibleFailure')
-                reset('personInCharge')
-                reset('dateTimeArrival')
-                reset('dateTimeFinish')
-                setPreviewUrl(null)
-                setModal(false)
-                location.reload()
-            }
-        })
-    }
-
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            setData('image', file);
-            setPreviewUrl(URL.createObjectURL(file)); // crea una URL temporal
-        }
-    };
-
-    useEffect(() => {
-        if (!modal) {
-            reset('image')
-            reset('description')
-            reset('posibleFailure')
-            reset('personInCharge')
-            reset('dateTimeArrival')
-            reset('dateTimeFinish')
-            setPreviewUrl(null)
-        }
-    }, [modal])
+    const {
+        data, setData, errors, processing,
+        handleSubmit, handleFileChange,
+        previewImage, setPreviewImage,
+        previewUrl
+    } = useComputerForm(modal, setModal);
 
     return (
         <>
-            <Modal modal={modal} setModal={setModal} classNameBox="bg-slate-800 rounded p-5" >
-                <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+            <Modal modal={modal} setModal={setModal} classNameBox="bg-slate-700 rounded p-5" >
+                <form onSubmit={handleSubmit} className='flex flex-col gap-2'>
                     <div className='flex justify-between gap-2'>
                         <div className='flex flex-col gap-2'>
                             <span className='text-white'>Tipo de computadora</span>
@@ -113,15 +71,16 @@ const ModalComputer = ({ equipments, setEquipments, modal, setModal, toggleModal
 
                         <div className='flex flex-col gap-2 w-1/2'>
                             <Textarea
-                                onChange={(e) => setData('posibleFailure', e.target.value)}
+                                onChange={(e) => setData('possibleFailures', e.target.value)}
                                 value={data.posibleFailure}
-                                id="posible_failure"
+                                id="possible_failures"
                                 placeholder="Posibles fallas"
-                                className='w-full h-24 bg-slate-900 text-white resize-none' />
+                                className='w-full h-24 bg-slate-900 text-white resize-none overflow-y-auto custom-scrollbar' />
+                            {errors.posibleFailure && <p className="text-red-500 text-sm">{errors.posibleFailure}</p>}
                         </div>
                     </div>
-                    <div className="flex justify-evenly h-max">
-                        <div className='flex flex-col gap-2'>
+                    <div className="flex h-max w-full">
+                        <div className='flex flex-col w-1/2'>
                             <input
                                 type="file"
                                 id="image"
@@ -129,51 +88,77 @@ const ModalComputer = ({ equipments, setEquipments, modal, setModal, toggleModal
                                 accept="image/*"
                                 onChange={handleFileChange}
                             />
-
-                            {errors.image && <div className="text-red-500">{errors.image}</div>}
-
-                            <div className='flex gap-2 items-center'>
-
+                            <div className='flex gap-2 items-center w-full pr-6'>
                                 <label htmlFor="image" className="cursor-pointer">
                                     <div className="flex items-center gap-2">
-                                        <span className="text-white">Adjuntar imagen</span>
-                                        <ImagePlus className="h-4 w-4" />
+                                        <p className="text-white flex flex-col">
+                                            <span>Adjuntar imagen</span>
+                                            <span className="text-gray-400 text-[10px]">Max. 4MB</span>
+                                        </p>
+                                        <ImagePreview imageURL={previewUrl} className="size-14 border border-gray-400" />
                                     </div>
                                 </label>
-
-                                {previewUrl && (
-                                    <img
-                                        src={previewUrl}
-                                        alt="Vista previa"
-                                        className="w-14 h-14 object-cover rounded border border-gray-300"
-                                    />
-                                )}
                             </div>
+                            {
+                                errors.image
+                                    ? <p className="text-red-500 text-sm">{errors.image}</p>
+                                    : null
+                            }
                         </div>
-                        <DropdownMenu>
+                        <DropdownMenu className="w-1/2">
                             <DropdownMenuTrigger asChild>
-                                <Button variant="outline" className="min-w-28 px-4 py-1">
-                                    {data.personInCharge ? data.personInCharge : 'Docente o alumno a cargo'} <ArrowDown />
+                                <Button variant="outline" className="w-56 px-4 py-1 truncate flex items-center justify-between">
+                                    {
+                                        data.personInCharge ?
+                                            <>
+                                                <div className="flex items-center gap-2">
+                                                    <ImageProfile src={previewImage} className="h-5 w-5 overflow-hidden rounded-full" alt={data.personInCharge} />
+                                                    <span>{data.personInCharge}</span>
+                                                </div>
+                                            </>
+                                            : <span>Persona encargada</span>
+                                    }
+                                    <ArrowDown />
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56">
+                            <DropdownMenuContent className="w-56 h-40 overflow-y-auto custom-scrollbar">
                                 {users.map((user: User) => (
                                     <DropdownMenuItem
-                                        onClick={() => setData('personInCharge', user.name)}
+                                        onClick={() => {
+                                            setData('personInCharge', user.name)
+                                            setPreviewImage(user.image)
+                                        }}
                                         className="cursor-pointer"
                                         key={user.id}
                                     >
-                                        {user.name}
+                                        <ImageProfile src={user.image} className="size-8 rounded-full" />
+                                        <span>{user.name}</span>
                                     </DropdownMenuItem>
                                 ))}
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
-                    <Button type="submit" className="mt-4 w-max px-5 py-2" tabIndex={4} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Añadir
-                    </Button>
-
+                    <div className="flex gap-4">
+                        <Button
+                            variant='secondary'
+                            type="submit"
+                            className="mt-4 w-max px-5 py-2 cursor-pointer"
+                            tabIndex={4}
+                            disabled={processing}
+                        >
+                            {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                            Añadir
+                        </Button>
+                        <Button
+                            variant='danger'
+                            type="button"
+                            className="mt-4 w-max px-5 py-2 cursor-pointer"
+                            tabIndex={5}
+                            onClick={() => setModal(false)}
+                        >
+                            Cancelar
+                        </Button>
+                    </div>
                 </form>
             </Modal >
         </>

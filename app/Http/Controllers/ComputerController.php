@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreComputerRequest;
 use App\Models\Computer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ComputerController extends Controller
 {
@@ -76,6 +77,10 @@ class ComputerController extends Controller
      */
     public function destroy(Computer $computer)
     {
+        $path = $computer->image;
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
         $computer->delete();
 
         return back();

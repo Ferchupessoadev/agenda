@@ -157,3 +157,20 @@
         @apply bg-background text-foreground;
     }
 }
+
+
+.custom-scrollbar {
+    scrollbar-color: #a0aec0 #0a0a0a;
+    scrollbar-width: thin;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #020202;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #a0aec0;
+  border-radius: 3px;
+}

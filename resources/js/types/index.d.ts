@@ -35,7 +35,7 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    avatar?: string;
+    image: string;
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
@@ -49,7 +49,7 @@ export type equipmentType = {
     date_time_finish: Date,
     date_time_arrival: Date,
     description: string,
-    posible_failure: string,
+    possible_failures: string,
     image: string,
     person_in_charge: string
 }

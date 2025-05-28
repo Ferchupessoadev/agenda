@@ -1,7 +1,7 @@
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { Head, useForm, usePage } from '@inertiajs/react';
+import { FormEventHandler, useEffect } from 'react';
 
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import { Edit } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,22 +22,23 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 type ProfileForm = {
     name: string;
-    email: string;
+    image: File | null;
 }
 
-export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
+export default function Profile() {
     const { auth } = usePage<SharedData>().props;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
+    const { data, setData, post, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
         name: auth.user.name,
-        email: auth.user.email,
+        image: null,
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'), {
+        post(route('profile.update'), {
             preserveScroll: true,
+            forceFormData: true,
         });
     };
 
@@ -54,6 +56,8 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                             <Input
                                 id="name"
+                                type="text"
+                                name="name"
                                 className="mt-1 block w-full"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
@@ -64,28 +68,21 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                             <InputError className="mt-2" message={errors.name} />
                         </div>
-
-                        {mustVerifyEmail && auth.user.email_verified_at === null && (
-                            <div>
-                                <p className="text-muted-foreground -mt-4 text-sm">
-                                    Your email address is unverified.{' '}
-                                    <Link
-                                        href={route('verification.send')}
-                                        method="post"
-                                        as="button"
-                                        className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
-                                    >
-                                        Click here to resend the verification email.
-                                    </Link>
-                                </p>
-
-                                {status === 'verification-link-sent' && (
-                                    <div className="mt-2 text-sm font-medium text-green-600">
-                                        A new verification link has been sent to your email address.
-                                    </div>
-                                )}
+                        <div className="grid gap-2 relative w-max h-max group">
+                            {
+                                auth.user.image == "default-user.jpg" ?
+                                    <img src={'/' + auth.user.image} alt={auth.user.name} className="w-16 h-16 rounded-full object-cover" />
+                                    :
+                                    <img src={'/storage/' + auth.user.image} alt={auth.user.name} className="w-16 h-16 rounded-full object-cover" />
+                            }
+                            <Input id="image" type="file" name="image" className="hidden" onChange={(e) => setData('image', e.target.files![0])} />
+                            <div
+                                className='bg-[rgba(0,0,0,0.4)] absolute rounded-full w-16 h-16 z-10 hidden group-hover:block cursor-pointer'
+                                onClick={() => document.getElementById('image')?.click()}
+                            >
+                                <Edit className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white w-12' />
                             </div>
-                        )}
+                        </div>
 
                         <div className="flex items-center gap-4">
                             <Button disabled={processing}>Guardar</Button>

@@ -26,8 +26,9 @@ class StoreComputerRequest extends FormRequest
             'computerType' => 'required|string',
             'dateTimeArrival' => 'required|date|before:dateTimeFinish',
             'dateTimeFinish' => 'required|date|after:dateTimeArrival',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'required|string|max:255',
-            'posibleFailure' => 'required|string|max:255',
+            'possibleFailures' => 'required|string|max:255',
             'personInCharge' => 'required|string|exists:users,name',
         ];
     }
