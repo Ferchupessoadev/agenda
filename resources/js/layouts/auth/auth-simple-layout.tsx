@@ -30,7 +30,8 @@ export default function AuthSimpleLayout({ children, title, description }: Props
             </div>
             <img
                 className='fixed top-0 right-0 object-cover h-full w-[50%] hidden md:block'
-                src="/banner-auth.jpg" alt="" />
+                src="/banner-auth.jpg" alt=""
+            />
         </div>
     );
 }

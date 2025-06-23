@@ -30,7 +30,7 @@ const ModalComputer = ({ modal, setModal, users }: Props) => {
 
     return (
         <>
-            <Modal modal={modal} setModal={setModal} classNameBox="bg-slate-700 rounded p-5" >
+            <Modal modal={modal} setModal={setModal} classNameBox="bg-slate-700 rounded p-5">
                 <form onSubmit={handleSubmit} className='flex flex-col gap-2'>
                     <div className='flex justify-between gap-2'>
                         <div className='flex flex-col gap-2'>
@@ -106,7 +106,7 @@ const ModalComputer = ({ modal, setModal, users }: Props) => {
                             }
                         </div>
                         <DropdownMenu className="w-1/2">
-                            <DropdownMenuTrigger asChild>
+                            <DropdownMenuTrigger asChild className="mx-2">
                                 <Button variant="outline" className="w-56 px-4 py-1 truncate flex items-center justify-between">
                                     {
                                         data.personInCharge ?

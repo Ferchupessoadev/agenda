@@ -19,21 +19,18 @@ export default function Technical({ users }: { users?: User[] }) {
                 <div className="flex flex-col flex-wrap gap-4 w-full">
                     {users ?
                         users.map(user => (
-                            <div key={user.id} className="flex gap-2 w-40 h-40 border border-gray-400">
+                            <div key={user.id} className="flex items-center gap-4 w-full h-40">
                                 {
-                                    user.image == 'default-user.jpg' ?
-                                        <img className="w-full object-cover" src={user.image} alt={user.name} />
-                                        :
-                                        <img className="w-full object-cover" src={'/storage/' + user.image} alt={user.name} />
+                                    user.image == "default-user.jpg"
+                                        ? <img className="w-40 h-40 object-cover rounded-full" src={user.image} alt={user.name} />
+                                        : <img className="w-40 h-40 object-cover rounded-full" src={'/storage/' + user.image} alt={user.name} />
                                 }
                                 <div className="flex flex-col gap-2">
-
-                                    <p>{user.name}</p>
-                                    <p className="">{user.email}</p>
+                                    <p className="text-lg">{user.name}</p>
+                                    <p className="text-sm text-gray-500">{user.email}</p>
                                 </div>
                             </div>
-                        )
-                        ) : (
+                        )) : (
                             <p>No hay usuarios</p>
                         )
                     }

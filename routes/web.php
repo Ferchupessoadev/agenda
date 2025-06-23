@@ -24,15 +24,13 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 
     Route::get('/technical', function () {
-        return Inertia::render('technical',['users' => User::all()]);
+        return Inertia::render('technical', ['users' => User::all()]);
     })->name('technical');
 
     Route::get('/computers', [ComputerController::class, 'index'])->name('computers.index');
-
+    Route::get('/computers/{computer}', [ComputerController::class, 'show'])->name('computers.show');
     Route::post('/computers', [ComputerController::class, 'store'])->name('computers.store');
-
     Route::delete('/computers/{computer}', [ComputerController::class, 'destroy'])->name('computers.destroy');
-
 });
 
 require __DIR__.'/settings.php';

@@ -10,3 +10,8 @@ export function getInitials(name: string) {
     const initials = names.map((n) => n.charAt(0).toUpperCase());
     return initials.join('');
 }
+
+export function formatDate(date: string) {
+
+    return date.split('-').join('/');
+}

@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { useState } from "react"
 
-export default function ModalImage({ src, alt = "Imagen" }: { src: string; alt?: string }) {
+export default function ModalImage({ src, alt = "Imagen", className }: { src: string; alt?: string, className?: string }) {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -9,7 +9,7 @@ export default function ModalImage({ src, alt = "Imagen" }: { src: string; alt?:
             <img
                 src={src}
                 alt={alt}
-                className="rounded cursor-pointer size-16"
+                className={className + " rounded cursor-pointer size-16"}
                 onClick={() => setIsOpen(true)}
             />
 

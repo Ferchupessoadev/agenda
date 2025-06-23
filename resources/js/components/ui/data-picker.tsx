@@ -37,8 +37,8 @@ export function DatePickerDemo({ onChange, inputname }: { onChange: (date: Date)
                 <Calendar
                     mode="single"
                     selected={date}
+                    className="relative"
                     onSelect={handleSelect}
-                    initialFocus
                 />
             </PopoverContent>
         </Popover>

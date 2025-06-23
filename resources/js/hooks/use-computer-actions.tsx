@@ -11,12 +11,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "../components/ui/dropdown-menu"
-import { Edit, Eye, MoreHorizontal, Trash } from "lucide-react"
+import { Edit, Eye, IdCard, MoreHorizontal, Trash } from "lucide-react"
 import { Button } from "../components/ui/button"
 
-const POSTION_ACTIONS = 7
 
 export default function useComputerActions(equipments: equipmentType[], columns: ColumnDef<Computer>) {
+    const POSTION_ACTIONS = 7
     const [equipmentsState, setEquipments] = useState<equipmentType[]>(equipments)
 
     const handleDelete = (id: number) => {
@@ -33,8 +33,8 @@ export default function useComputerActions(equipments: equipmentType[], columns:
 
         return (
             <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-8 w-8 p-0">
+                <DropdownMenuTrigger className="flex items-center justify-center" asChild>
+                    <Button variant="ghost" className="h-8 w-8 p-0 flex items-center justify-center">
                         <span className="sr-only">Open menu</span>
                         <MoreHorizontal />
                     </Button>
@@ -42,11 +42,14 @@ export default function useComputerActions(equipments: equipmentType[], columns:
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                     <DropdownMenuItem
-                        onClick={() => navigator.clipboard.writeText(computer.id)}
+                        onClick={() => {
+                            navigator.clipboard.writeText(computer.id)
+                            alert('ID copiado al portapapeles')
+                        }}
                     >
-                        Copiar computer ID
+                        <IdCard className="mr-2" /> Copiar ID
                     </DropdownMenuItem>
-                    <DropdownMenuItem><Eye className="mr-2" /> Ver detalles</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => router.get(route('computers.show', computer.id))}><Eye className="mr-2" />Ver detalles</DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem><Edit className="mr-2" />Edit</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleDelete(computer.id)}><Trash className="mr-2" />Delete</DropdownMenuItem>

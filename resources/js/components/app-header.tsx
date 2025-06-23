@@ -25,6 +25,11 @@ const mainNavItems: NavItem[] = [
         href: '/technical',
         icon: CircleUserRound,
     },
+    {
+        title: 'dashboard',
+        href: '/dashboard',
+        icon: CircleUserRound,
+    }
 ];
 
 const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';

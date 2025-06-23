@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreComputerRequest;
 use App\Models\Computer;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class ComputerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): RedirectResponse
     {
         return response()->json(Computer::all());
     }
@@ -28,11 +30,10 @@ class ComputerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreComputerRequest $request)
+    public function store(StoreComputerRequest $request): RedirectResponse
     {
-
         $newComputer = new Computer();
-        $newComputer->computer_type = $request->input('computerType');
+        $newComputer->computer_type = $request->computerType;
         $newComputer->description = $request->description;
         $newComputer->possible_failures = $request->possibleFailures;
         $newComputer->date_time_arrival = $request->dateTimeArrival;
@@ -44,16 +45,15 @@ class ComputerController extends Controller
         $newComputer->image = $path;
 
         $newComputer->save();
-
         return back();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Computer $computer)
     {
-        //
+        return Inertia::render('computers/show', ['computer' => $computer]);
     }
 
     /**
@@ -75,7 +75,7 @@ class ComputerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Computer $computer)
+    public function destroy(Computer $computer): RedirectResponse
     {
         $path = $computer->image;
         if (Storage::disk('public')->exists($path)) {
