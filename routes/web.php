@@ -1,11 +1,11 @@
 <?php
 
+use App\Http\Controllers\ComputerController;
 use App\Models\Computer;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\ComputerController;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -19,13 +19,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', fn() => Inertia::render('dashboard'))->name('dashboard');
 
-    Route::get('/technical', function () {
-        return Inertia::render('technical', ['users' => User::all()]);
-    })->name('technical');
+    Route::get('/technical', fn() => Inertia::render('technical', ['users' => User::all()]))->name('technical');
 
     Route::get('/computers', [ComputerController::class, 'index'])->name('computers.index');
     Route::get('/computers/{computer}', [ComputerController::class, 'show'])->name('computers.show');
@@ -33,5 +29,5 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/computers/{computer}', [ComputerController::class, 'destroy'])->name('computers.destroy');
 });
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';
