@@ -3,6 +3,7 @@ import type { Config } from 'ziggy-js';
 
 export interface Auth {
     user: User;
+    roles: string[];
 }
 
 export interface BreadcrumbItem {
@@ -19,6 +20,7 @@ export interface NavItem {
     title: string;
     href: string;
     icon?: LucideIcon | null;
+    role?: string;
     isActive?: boolean;
 }
 
@@ -26,6 +28,7 @@ export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
+    role: string;
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
     [key: string]: unknown;

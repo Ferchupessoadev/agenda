@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import useModal from '@/hooks/use-modal';
 import ModalComputer from '@/components/modal-computer';
-import Equipments from '@/components/equipments';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -13,7 +12,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
 ];
-export default function Home({ equipments, users }: { equipments: equipmentType[], users?: User[] }) {
+export default function Home({ users, role }: { users?: User[], role?: string }) {
     const { modal, setModal, toggleModal } = useModal(false)
 
     return (
@@ -29,7 +28,6 @@ export default function Home({ equipments, users }: { equipments: equipmentType[
                             </span>
                         </Button>
                     </section>
-                    <Equipments equipments={equipments} />
                 </main>
             </AppLayout>
         </>

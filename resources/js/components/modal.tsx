@@ -17,7 +17,7 @@ export default function Modal({ modal, setModal, classNameBox, children, classNa
                 onClick={() => setModal(false)}
                 className={`absolute size-full bg-[rgba(0,0,0,0.5)] `}
             ></div>
-            <div className={`relative w-2/3 h-2/3 ${classNameBox}`}>
+            <div className={`relative w-3/4 h-3/4 ${classNameBox}`}>
                 {children}
             </div>
 
