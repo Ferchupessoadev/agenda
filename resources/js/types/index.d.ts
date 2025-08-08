@@ -28,7 +28,7 @@ export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
-    role: string;
+    roles: string[];
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
     [key: string]: unknown;
@@ -44,26 +44,3 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
-
-
-export type equipmentType = {
-    id: number,
-    computer_type: string
-    date_time_finish: Date,
-    date_time_arrival: Date,
-    description: string,
-    possible_failures: string,
-    image: string,
-    person_in_charge: string
-}
-
-export type computerForm = {
-    computerType: string,
-    dateTimeFinish: Date,
-    dateTimeArrival: Date,
-    description: string,
-    posibleFailure: string,
-    image: File | null,
-    personInCharge: string
-}
-

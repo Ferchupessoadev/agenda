@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (['admin', 'teacher', 'student'] as $role) {
+        foreach (['admin', 'teacher', 'student', 'user'] as $role) {
             Role::firstOrCreate(['name' => $role]);
         }
         $admin = User::factory()->create([

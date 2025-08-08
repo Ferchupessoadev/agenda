@@ -5,7 +5,7 @@ export default function AppLogo() {
         <>
             <AppLogoIcon className="size-10 fill-current text-white dark:text-black" />
             <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-none font-semibold">Agenda</span>
+                <span className="mb-0.5 truncate leading-none font-semibold">Orden de trabajo</span>
             </div>
         </>
     );

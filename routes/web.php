@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\ComputerController;
-use App\Models\Computer;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -10,8 +8,7 @@ use Inertia\Inertia;
 Route::get('/', function () {
     if (Auth::check()) {
         return Inertia::render('home', [
-            'equipments' => Computer::all(),
-            'users' => User::all()
+            'users' => User::all(),
         ]);
     }
 
@@ -19,7 +16,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', fn() => Inertia::render('dashboard'))->name('dashboard');
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('/dashboard', fn() => Inertia::render('dashboard'))->name('dashboard');
+    });
 
     Route::get('/technical', fn() => Inertia::render('technical', ['users' => User::all()]))->name('technical');
 });

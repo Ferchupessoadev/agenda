@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { equipmentType, User, type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
@@ -12,14 +12,14 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
 ];
-export default function Home({ users, role }: { users?: User[], role?: string }) {
+export default function Home() {
     const { modal, setModal, toggleModal } = useModal(false)
 
     return (
         <>
-            <ModalComputer modal={modal} setModal={setModal} users={users} />
+            <ModalComputer modal={modal} setModal={setModal} />
             <AppLayout breadcrumbs={breadcrumbs}>
-                <Head title="Panel" />
+                <Head title="Inicio" />
                 <main className="p-4">
                     <section className='flex justify-end'>
                         <Button onClick={toggleModal} className='cursor-pointer' variant="destructive">
