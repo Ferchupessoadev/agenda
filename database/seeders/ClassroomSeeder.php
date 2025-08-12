@@ -20,6 +20,9 @@ class ClassroomSeeder extends Seeder
                 'name' => 'aula 14',
             ],
             [
+                'name' => 'aula 15',
+            ],
+            [
                 'name' => 'aula 16',
             ],
         ];

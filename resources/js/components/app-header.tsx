@@ -10,26 +10,15 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { CircleUserRound, Home, Menu } from 'lucide-react';
+import { Home, Menu } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
-import { useEffect } from 'react';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Home',
         href: '/',
         icon: Home,
-    },
-    {
-        title: 'Tecnicos',
-        href: '/technical',
-        icon: CircleUserRound,
-    },
-    {
-        title: 'dashboard',
-        href: '/dashboard',
-        icon: CircleUserRound,
     }
 ];
 
@@ -93,9 +82,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="ml-6 hidden h-full items-center space-x-6 lg:flex">
-                        <NavigationMenu className="flex h-full items-stretch">
-                            <NavigationMenuList className="flex h-full items-stretch space-x-2">
+                    <div className="ml-6 hidden h-full space-x-6 lg:flex">
+                        <NavigationMenu className="flex h-full items-stretch justify-center">
+                            <NavigationMenuList className="flex h-full items-end space-x-2">
                                 {mainNavItems.map((item, index) => {
                                     if (item.title === 'dashboard' && !roles.includes('admin')) {
                                         return;

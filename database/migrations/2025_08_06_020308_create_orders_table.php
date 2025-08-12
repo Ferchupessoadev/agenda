@@ -12,15 +12,15 @@ return new class extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->enum('priority', ['low', 'medium', 'high']);
+            $table->enum('priority', ['baja', 'media', 'alta']);
             $table->foreignId('required_by')->references('id')->on('users');
             $table->foreignId('approved_by')->nullable()->references('id')->on('users');
             $table->string('equipment');
             $table->foreignId('classroom_id')->constrained();
             $table->string('description');
 
-            $table->enum('approval_status', ['pending', 'approved', 'rejected']);
-            $table->enum('work_status', ['Repair', 'awaiting parts', 'No solution']);
+            $table->enum('approval_status', ['Pendiente', 'Aprobado', 'Rechazado']);
+            $table->enum('work_status', ['Reparado', 'Esperando repuesto', 'Sin solución']);
 
             $table->string('description_solution');
             $table->foreignId('supervised_by')->references('id')->on('users');
