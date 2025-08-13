@@ -4,12 +4,13 @@ import { SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import AppLogo from './app-logo';
 import { mainNavItemsForAdmin, mainNavItemsForTeacher, mainNavItemsForStudent, mainNavItemsForUser } from '@/config/mainNavItems';
+import { useEffect } from 'react';
 
 export function AppSidebar() {
-    const { user, roles } = usePage<SharedData>().props.auth;
+    const { user, roles } = usePage<SharedData>().props;
 
     let $mainNavItems;
-    switch (roles) {
+    switch (roles[0]) {
         case "admin": $mainNavItems = mainNavItemsForAdmin;
             break;
         case "teacher": $mainNavItems = mainNavItemsForTeacher;
